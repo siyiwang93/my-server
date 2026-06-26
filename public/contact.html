@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .form-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .form-card h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-card p {
+      font-size: 0.95rem;
+      color: #888;
+      margin-bottom: 1.75rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input, textarea {
+      padding: 0.65rem 0.9rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      background: #f9fafb;
+      color: #333;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #4f46e5;
+      background: #fff;
+    }
+
+    input.invalid, textarea.invalid {
+      border-color: #dc2626;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .field-error {
+      font-size: 0.8rem;
+      color: #dc2626;
+      display: none;
+    }
+
+    .field-error.visible {
+      display: block;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.7rem;
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-top: 0.5rem;
+    }
+
+    .submit-btn:hover {
+      background-color: #4338ca;
+    }
+
+    .success {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .success-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .success h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.5rem;
+    }
+
+    .success p {
+      color: #888;
+      font-size: 0.95rem;
+    }
+
+    .success-btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.4rem;
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .success-btn:hover {
+      background-color: #4338ca;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .form-card { background-color: #1a1a24; box-shadow: 0 1px 6px rgba(0,0,0,0.3); }
+      .form-card h2, .success h2 { color: #f0f0f0; }
+      label { color: #aaa; }
+      input, textarea { background-color: #0f0f13; border-color: #2a2a35; color: #e2e2e2; }
+      input:focus, textarea:focus { border-color: #818cf8; background-color: #1a1a24; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="/">MySite</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact" class="active">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="form-card">
+
+      <div id="form-section">
+        <h2>Get in touch</h2>
+        <p>Fill out the form below and I'll get back to you soon.</p>
+
+        <form id="contact-form" novalidate>
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Your name">
+            <span class="field-error" id="name-error">Please enter your name.</span>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="you@example.com">
+            <span class="field-error" id="email-error">Please enter a valid email address.</span>
+          </div>
+
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="What's on your mind?"></textarea>
+            <span class="field-error" id="message-error">Please enter a message.</span>
+          </div>
+
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
+
+      <div class="success" id="success-section">
+        <div class="success-icon">✓</div>
+        <h2>Message sent!</h2>
+        <p>Thanks for reaching out. I'll get back to you soon.</p>
+        <button class="success-btn" onclick="resetForm()">Send another</button>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 MySite. <a href="https://github.com" target="_blank">GitHub</a></p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('contact-form');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      if (validate()) showSuccess();
+    });
+
+    function validate() {
+      const name    = document.getElementById('name');
+      const email   = document.getElementById('email');
+      const message = document.getElementById('message');
+      let valid = true;
+
+      valid = setField(name,    'name-error',    name.value.trim() !== '')          && valid;
+      valid = setField(email,   'email-error',   isValidEmail(email.value.trim()))  && valid;
+      valid = setField(message, 'message-error', message.value.trim() !== '')       && valid;
+
+      return valid;
+    }
+
+    function setField(input, errorId, isValid) {
+      const error = document.getElementById(errorId);
+      input.classList.toggle('invalid', !isValid);
+      error.classList.toggle('visible', !isValid);
+      return isValid;
+    }
+
+    function isValidEmail(str) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
+    }
+
+    function showSuccess() {
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('success-section').style.display = 'block';
+    }
+
+    function resetForm() {
+      form.reset();
+      form.querySelectorAll('input, textarea').forEach(el => el.classList.remove('invalid'));
+      form.querySelectorAll('.field-error').forEach(el => el.classList.remove('visible'));
+      document.getElementById('success-section').style.display = 'none';
+      document.getElementById('form-section').style.display = 'block';
+    }
+
+    // Clear error on input
+    ['name', 'email', 'message'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        document.getElementById(id).classList.remove('invalid');
+        document.getElementById(id + '-error').classList.remove('visible');
+      });
+    });
+  </script>
+
+</body>
+</html>
